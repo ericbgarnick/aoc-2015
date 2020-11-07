@@ -10,8 +10,11 @@
   ([parens position total]
    (if (= -1 (add-paren total (first parens)))
      position
-     (find-basement (rest parens) (+ position 1) (add-paren total (first parens))))))
+     (find-basement
+       (rest parens)
+       (+ position 1)
+       (add-paren total (first parens))))))
 
 (defn -main
   [& args]
-  (println (find-basement (clojure.string/split (slurp "src/aoc_2015/day01/input.txt") #""))))
+  (println (find-basement (parse-input))))

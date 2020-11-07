@@ -10,4 +10,4 @@
 
 (defn -main
   [& args]
-  (println (sum-parens (clojure.string/split (slurp "src/aoc_2015/day01/input.txt") #""))))
+  (println (sum-parens (parse-input))))
