@@ -1,5 +1,4 @@
-(ns day02.shared
-  (:gen-class))
+(ns day02.shared)
 
 (defn parse-input
   "Read input file content and split on newlines"

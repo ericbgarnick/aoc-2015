@@ -1,5 +1,4 @@
-(ns day01.shared
-  (:gen-class))
+(ns day01.shared)
 
 (defn add-paren
   [total paren]

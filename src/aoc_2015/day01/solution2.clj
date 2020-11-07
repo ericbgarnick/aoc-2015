@@ -1,8 +1,6 @@
 (ns day01.solution2
+  (:require [day01.shared :refer :all])
   (:gen-class))
-
-(require 'day01.shared)
-(refer 'day01.shared)
 
 (defn find-basement
   ([parens]

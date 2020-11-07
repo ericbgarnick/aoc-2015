@@ -1,4 +1,5 @@
 (ns day02.solution1
+  (:require [day02.shared :refer :all])
   (:gen-class))
 
 (require 'day02.shared)

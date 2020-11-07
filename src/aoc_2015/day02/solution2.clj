@@ -1,8 +1,6 @@
 (ns day02.solution2
+  (:require [day02.shared :refer :all])
   (:gen-class))
-
-(require 'day02.shared)
-(refer 'day02.shared)
 
 (defn length-for-dimensions
   "Return perimeter of the smallest side plus the volume of the whole"

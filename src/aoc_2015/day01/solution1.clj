@@ -1,8 +1,6 @@
 (ns day01.solution1
+  (:require [day01.shared :refer :all])
   (:gen-class))
-
-(require 'day01.shared)
-(refer 'day01.shared)
 
 (defn sum-parens
   [parens]
