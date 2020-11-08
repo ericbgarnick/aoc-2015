@@ -27,7 +27,9 @@
 (defn follow-directions
   "Return the set of locations visited"
   [directions]
-  (loop [visited #{} [cur-x cur-y] [0 0] directions directions]
+  (loop [visited #{}
+         [cur-x cur-y] [0 0]
+         directions directions]
     (if-let [next-dir (first directions)]
       (recur
         (conj visited [cur-x cur-y])
