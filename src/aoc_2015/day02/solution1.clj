@@ -2,9 +2,6 @@
   (:require [day02.shared :refer :all])
   (:gen-class))
 
-(require 'day02.shared)
-(refer 'day02.shared)
-
 (defn area-for-dimensions
   "Return total surface area plus smallest side extra"
   [[x y z]]
