@@ -15,7 +15,7 @@
   [candidate]
   (> (count (filter #(contains? vowels %) candidate)) (- min-vowels 1)))
 
-(defn has-any-double-letters?
+(defn has-any-pairs?
   [candidate]
   (loop [first-letter (first candidate)
         remaining (rest candidate)]
@@ -37,7 +37,7 @@
   [candidate]
   (and
     (has-enough-vowels? candidate)
-    (has-any-double-letters? candidate)
+    (has-any-pairs? candidate)
     (has-no-bad-sequences? candidate)))
 
 (defn count-nice
