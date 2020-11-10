@@ -2,20 +2,10 @@
   (:require [clojure.string :refer [join split]])
   (:gen-class))
 
-(def vowels #{\a \e \i \o \u})
-(def min-vowels 3)
-(def bad-sequences #{"ab" "cd" "pq" "xy"})
-
 (defn parse-input
   "Read input file content and split on newlines"
   []
   (split (slurp "src/aoc_2015/day05/input.txt") #"\n"))
-
-(defn is-repeated-pair?
-  [pair? search-space]
-  (and
-    (= (first pair?) (last pair?))
-    (re-find (re-pattern pair?) search-space)))
 
 (defn has-repeated-pairs?
   [candidate]
@@ -24,12 +14,17 @@
     (if (empty? (subs remaining 1))
       false
       (or
-        (is-repeated-pair? pair? (subs remaining 1))
+        (re-find (re-pattern pair?) (subs remaining 1))
         (recur (subs remaining 0 2) (subs remaining 1))))))
 
 (defn has-a-sandwich?
   [candidate]
-  ())
+  (loop [first-letter (first candidate)
+         remaining (rest candidate)]
+    (if (empty? (rest remaining))
+      false
+      (or (= first-letter (nth remaining 1))
+          (recur (first remaining) (rest remaining))))))
 
 (defn is-nice?
   [candidate]
