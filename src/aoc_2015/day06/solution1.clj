@@ -41,7 +41,7 @@
 
 (defn extract-operation
   [instruction]
-  (-> (operation-name instruction) symbol resolve))
+  (ns-resolve 'day06.solution1 (symbol (operation-name instruction))))
 
 (defn extract-start-point
   [instruction]
