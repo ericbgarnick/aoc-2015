@@ -1,0 +1,6 @@
+NOT b -> c
+d OR e -> f
+c OR f -> a
+44430 -> b
+b LSHIFT 2 -> e
+b AND c -> d
