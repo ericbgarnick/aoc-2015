@@ -66,6 +66,12 @@
         (rest remaining-instructions)
         (set-instruction (first remaining-instructions) instruction-map)))))
 
+(defn deref-or-identity
+  [conversions quarry]
+  (if (number? quarry)
+    quarry
+    (conversions quarry)))
+
 (defn op-fn
   [operation-name]
   (ns-resolve 'day07.solution1 (symbol (str "op-" operation-name))))
@@ -78,7 +84,7 @@
 (defn find-value
   [conversions quarry]
   (println (str "QUARRY: " quarry))
-  (let [value (conversions quarry)]
+  (let [value (deref-or-identity conversions quarry)]
     (println (str "VALUE: " value " OF TYPE: " (type value)))
     (if (number? value)
       value
