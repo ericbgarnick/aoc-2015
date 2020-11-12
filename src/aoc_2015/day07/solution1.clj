@@ -39,20 +39,30 @@
 ;;;;;;;;;;;;;
 (defn set-operation
   [instruction-map identifier operation operands value]
+  (println (str "VALUE: " value))
   (if value
     (assoc-in instruction-map [identifier operation] (vec (cons (Integer/parseInt value) operands)))
     (assoc-in instruction-map [identifier operation] operands)))
 
+(defn set-identifier
+  [instruction-map identifier operands value]
+  (println (str "IDENTIFIER: " identifier " OPERANDS: " operands " VALUE: " value))
+  (if (re-matches #"\d+" (str value))
+    (assoc instruction-map identifier (Integer/parseInt value))
+    (assoc instruction-map identifier (operands 0))))
+
 (defn set-instruction
   [raw-instruction
    instruction-map]
-  (let [instruction-key ((re-find #"-> (\w+)" raw-instruction) 1)
+  (let [identifier ((re-find #"-> (\w+)" raw-instruction) 1)
         operation (re-find #"[A-Z]+" raw-instruction)
         operands (vec (re-seq #"[a-z]+" ((split raw-instruction #" -> ") 0)))
         value (re-find #"\d+" raw-instruction)]
+    (println (str "OPERATION: " operation))
+    (println (str "RAW INST: " raw-instruction))
     (if operation
-      (set-operation instruction-map instruction-key (lower-case operation) operands value)
-      (assoc instruction-map instruction-key (Integer/parseInt value)))))
+      (set-operation instruction-map identifier (lower-case operation) operands value)
+      (set-identifier instruction-map identifier operands value))))
 
 (defn parse-instructions
   [raw-instructions]
@@ -68,6 +78,7 @@
 
 (defn deref-or-identity
   [conversions quarry]
+  (println (str "CONVERSIONS: " conversions))
   (if (number? quarry)
     quarry
     (conversions quarry)))
@@ -79,7 +90,9 @@
 (defn compute
   [conversions ops]
   (println (str "OPS: " ops))
-  ((op-fn (first (keys ops))) conversions (first (vals ops))))
+  (if (string? ops)
+    (find-value conversions ops)
+    ((op-fn (first (keys ops))) conversions (first (vals ops)))))
 
 (defn find-value
   [conversions quarry]
