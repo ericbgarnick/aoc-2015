@@ -39,14 +39,12 @@
 ;;;;;;;;;;;;;
 (defn set-operation
   [instruction-map identifier operation operands value]
-  (println (str "VALUE: " value))
   (if value
     (assoc-in instruction-map [identifier operation] (vec (cons (Integer/parseInt value) operands)))
     (assoc-in instruction-map [identifier operation] operands)))
 
 (defn set-identifier
   [instruction-map identifier operands value]
-  (println (str "IDENTIFIER: " identifier " OPERANDS: " operands " VALUE: " value))
   (if (re-matches #"\d+" (str value))
     (assoc instruction-map identifier (Integer/parseInt value))
     (assoc instruction-map identifier (operands 0))))
@@ -58,8 +56,6 @@
         operation (re-find #"[A-Z]+" raw-instruction)
         operands (vec (re-seq #"[a-z]+" ((split raw-instruction #" -> ") 0)))
         value (re-find #"\d+" raw-instruction)]
-    (println (str "OPERATION: " operation))
-    (println (str "RAW INST: " raw-instruction))
     (if operation
       (set-operation instruction-map identifier (lower-case operation) operands value)
       (set-identifier instruction-map identifier operands value))))
@@ -68,41 +64,41 @@
   [raw-instructions]
   (loop [remaining-instructions raw-instructions
          instruction-map {}]
-    (println remaining-instructions)
-    (println instruction-map)
     (if (empty? remaining-instructions)
       instruction-map
       (recur
         (rest remaining-instructions)
         (set-instruction (first remaining-instructions) instruction-map)))))
 
+;;;;;;;;;;;;;;;;;;;;
+;; Resolve values ;;
+;;;;;;;;;;;;;;;;;;;;
 (defn deref-or-identity
+  "Return quarry if it is a number, otherwise return
+  the value in conversions for quarry as a key"
   [conversions quarry]
-  (println (str "CONVERSIONS: " conversions))
   (if (number? quarry)
     quarry
     (conversions quarry)))
 
 (defn op-fn
+  "Return the function identified by operation-name"
   [operation-name]
   (ns-resolve 'day07.solution1 (symbol (str "op-" operation-name))))
 
 (defn compute
   [conversions ops]
-  (println (str "OPS: " ops))
   (if (string? ops)
     (find-value conversions ops)
     ((op-fn (first (keys ops))) conversions (first (vals ops)))))
 
 (defn find-value
   [conversions quarry]
-  (println (str "QUARRY: " quarry))
   (let [value (deref-or-identity conversions quarry)]
-    (println (str "VALUE: " value " OF TYPE: " (type value)))
     (if (number? value)
       value
       (compute conversions value))))
 
 (defn -main
   [& args]
-  ())
+  (println (find-value (parse-instructions (parse-input)) "a")))
